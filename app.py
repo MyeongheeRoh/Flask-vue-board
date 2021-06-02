@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import func
 
 
 app = Flask(__name__)
@@ -9,28 +8,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://mae:mae1234@localhost:5432/test'
 
 db = SQLAlchemy(app)
-
-class Article(db.Model):
-    __tablename__ = 't_article'
-
-    article_id = db.Column(db.Integer, primary_key = True)
-    board_id = db.Column(db.Integer)
-    user_id = db.Column(db.Integer)
-    preface = db.Column(db.String(50))
-    title = db.Column(db.String(50))
-    contents = db.Column(db.String(50))
-    liked = db.Column(db.Integer)
-    is_auto_translation = db.Column(db.Boolean)
-    is_fixed = db.Column(db.Boolean)
-    is_slack_alarm = db.Column(db.Boolean)
-    launch_date = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    is_deleted = db.Column(db.Boolean)
-    hidden = db.Column(db.Boolean)
-    created_user = db.Column(db.Integer)
-    created_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-    modified_user = db.Column(db.Integer)
-    modified_at = db.Column(db.DateTime(timezone=True), server_default=func.now())
-
 
 # readline_all.py
 # f = open("article_data.txt", 'r')
@@ -52,6 +29,7 @@ class Article(db.Model):
 #     db.session.commit()
 
 # f.close()
+from model.article import Article
 
 #Article Read
 @app.route('/')
@@ -63,7 +41,12 @@ def main():
 #Article Create
 @app.route('/create', methods=['POST'])
 def create():
-    article = Article(article_id=100, board_id=1, title=request.form['title'], contents=request.form['contents'], user_id=request.form['userId'])
+    article = Article(boardId=1, title=request.form['title'], contents=request.form['contents'], userId=request.form['userId'])
     db.session.add(article)
     db.session.commit()
+    
     return redirect(url_for('main'))
+
+# Default port:
+if __name__ == '__main__':
+    app.run()
