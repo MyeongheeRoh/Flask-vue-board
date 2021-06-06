@@ -1,36 +1,36 @@
 from flask import Flask, g
 from typing import Dict, Union
-from ..model.article import Article
+from ..model.board import Board
 
 
-_article = Article()
+_board = Board()
 
-class Article_service():
+class Board_service():
     
-    def getArticlesList():
+    def getBoardsList():
         try:
-            articles = _article.select_all()
-            return articles
+            boards = _board.select_all()
+            return boards
 
         except Exception as e:
             print('!'*100)
             print('error message:',e)
             raise e
 
-    def getOneArticle(articleId):
+    def getOneBoard(boardId):
         try:
-            article = _article.select_id(articleId)
-            return article
+            board = _board.select_id(boardId)
+            return board
 
         except Exception as e:
             print('!'*100)
             print('error message:',e)
             raise e
 
-    def createArticle(data):
+    def createBoard(data):
         try:
-            newArticle = _article.create(data)
-            return newArticle
+            newBoard = _board.create(data)
+            return newBoard
         
         except Exception as e:
             print('!'*100)

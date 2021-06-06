@@ -2,6 +2,7 @@ from flask import Flask, current_app
 from flask_sqlalchemy import SQLAlchemy
 from .database import DBManager
 
+
 app = Flask(__name__,  static_folder='./static', template_folder='./templates')
 db = SQLAlchemy(app)
 
@@ -17,8 +18,10 @@ def create_app():
     app.config.from_object(Config)
     
     # from application.ex_blueprint import bp
-    from .controller.article import bp
-    app.register_blueprint(bp)
+    from .controller.article import article
+    from .controller.board import board
+    app.register_blueprint(article)
+    app.register_blueprint(board)
 
     #db init
     with app.app_context():

@@ -1,3 +1,6 @@
+
+<!-- 
+article    
 <body>
     <div>
         <ul>
@@ -10,10 +13,31 @@
         </ul>
     </div>
     <div>
-        <form action="{{url_for('bp.create')}}" method="post" id="actionForm">
+        <form action="{{url_for('article.create')}}" method="post" id="actionForm">
             <p>Title <input type="text" name="title"></p>
             <p>Contents <input type="text" name="contents"></p>
             <p>User ID <input type="text" name="userId"></p>
+            <input type="submit" value="등록">
+        </form>
+    </div>
+</body> -->
+
+<body>
+    <div>
+        <ul>
+        {% for board in data %}
+        <li>Board ID : {{ board.boardId }} </li>
+        <li>Name : {{ board.name }} </li>
+        <li>Category ID : {{ board.categoryId }} </li>
+        <br>
+        {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <form action="{{url_for('board.create')}}" method="post" id="actionForm">
+            <p>Board ID <input type="text" name="boardId"></p>
+            <p>Name <input type="text" name="name"></p>
+            <p>Category ID <input type="text" name="categoryId"></p>
             <input type="submit" value="등록">
         </form>
     </div>
