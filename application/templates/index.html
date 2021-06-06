@@ -4,13 +4,13 @@
         {% for article in data %}
         <li>Title : {{ article.title }} </li>
         <li>Contents : {{ article.contents }} </li>
-        <li>User ID : {{ article.user_id }} </li>
+        <li>User ID : {{ article.userId }} </li>
         <br>
         {% endfor %}
         </ul>
     </div>
     <div>
-        <form action="{{url_for('create')}}" method="post" id="actionForm">
+        <form action="{{url_for('bp.create')}}" method="post" id="actionForm">
             <p>Title <input type="text" name="title"></p>
             <p>Contents <input type="text" name="contents"></p>
             <p>User ID <input type="text" name="userId"></p>

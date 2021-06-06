@@ -1,6 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from application.model import Base
+from flask import g
 
 
 class DBManager:
@@ -16,8 +17,11 @@ class DBManager:
                                         autoflush=False, 
                                         bind=DBManager.__engine)) #세션레지스트리 얻어서
 
-        global dao
-        dao = DBManager.__session #dao에 할당, 다른 모듈에서 참조가능
+        g.dao = DBManager.__session #dao에 할당, 다른 모듈에서 참조가능
+        print('*'*100)
+        print('init')
+        print(g.dao)
+        print('*'*100)
             
     @staticmethod
     def init_db(): #모델을 연결된 데이터베이스에 생성하는 함수
@@ -25,5 +29,3 @@ class DBManager:
         print('*'*100)
         print('init_db')
         print('*'*100)
-
-dao = None
