@@ -1,35 +1,35 @@
 from flask import Flask, g
-from ..model.board import Board
+from ..model.category import Category
 
 
-_board = Board()
+_category = Category()
 
-class Board_service():
+class Category_service():
     
-    def getBoardsList():
+    def getCategorysList():
         try:
-            boards = _board.select_all()
-            return boards
+            categorys = _category.select_all()
+            return categorys
 
         except Exception as e:
             print('!'*100)
             print('error message:',e)
             raise e
 
-    def getOneBoard(boardId):
+    def getOneCategory(categoryId):
         try:
-            board = _board.select_id(boardId)
-            return board
+            category = _category.select_id(categoryId)
+            return category
 
         except Exception as e:
             print('!'*100)
             print('error message:',e)
             raise e
 
-    def createBoard(data):
+    def createCategory(data):
         try:
-            newBoard = _board.create(data)
-            return newBoard
+            newCategory = _category.create(data)
+            return newCategory
         
         except Exception as e:
             print('!'*100)

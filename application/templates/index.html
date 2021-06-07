@@ -22,6 +22,8 @@ article
     </div>
 </body> -->
 
+<!-- 
+board    
 <body>
     <div>
         <ul>
@@ -38,6 +40,24 @@ article
             <p>Board ID <input type="text" name="boardId"></p>
             <p>Name <input type="text" name="name"></p>
             <p>Category ID <input type="text" name="categoryId"></p>
+            <input type="submit" value="등록">
+        </form>
+    </div>
+</body> -->
+
+<body>
+    <div>
+        <ul>
+        {% for category in data %}
+        <li>Category ID : {{ category.categoryId }} </li>
+        <li>Name : {{ category.name }} </li>
+        <br>
+        {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <form action="{{url_for('category.create')}}" method="post" id="actionForm">
+            <p>Name <input type="text" name="name"></p>
             <input type="submit" value="등록">
         </form>
     </div>

@@ -20,8 +20,10 @@ def create_app():
     # from application.ex_blueprint import bp
     from .controller.article import article
     from .controller.board import board
-    app.register_blueprint(article)
+    from .controller.category import category
     app.register_blueprint(board)
+    app.register_blueprint(article)
+    app.register_blueprint(category)
 
     #db init
     with app.app_context():

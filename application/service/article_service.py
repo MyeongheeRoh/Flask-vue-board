@@ -1,5 +1,4 @@
 from flask import Flask, g
-from typing import Dict, Union
 from ..model.article import Article
 
 
