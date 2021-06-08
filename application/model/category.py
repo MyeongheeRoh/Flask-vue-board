@@ -3,13 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from sqlalchemy import desc
 
-from . import Base
 from .. import db
+
 
 class Category(db.Model):
     __tablename__ = 't_category'
 
-    idSeq = db.Sequence('category_seq', metadata = Base.metadata)
+    idSeq = db.Sequence('category_seq', metadata = db.Model.metadata)
     categoryId = db.Column('category_id', db.Integer, idSeq, primary_key = True)
     name = db.Column('nm', db.String(45), unique = False)
     createdUser = db.Column('created_user', db.Integer, unique = False)

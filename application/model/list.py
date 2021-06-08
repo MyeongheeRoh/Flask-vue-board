@@ -1,43 +1,54 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Sequence, Boolean, DateTime
+from flask import g
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
+from sqlalchemy import desc
 
-engine = create_engine('postgresql://mae:mae1234@localhost:5432/test', echo=True)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
-Base = declarative_base()
-Base.query = db_session.query_property()
+from .. import db
 
-class List(Base):
+
+class List(db.Model):
     __tablename__ = 't_list'
 
-    idSeq = Sequence('list_seq', metadata = Base.metadata)
-    listId = Column('list_id', Integer, idSeq, primary_key = True)
-    listCategoryId = Column('list_category_id', Integer, unique = False)
-    korTitle = Column('kor_title', String(100), unique = False)
-    jpTitle = Column('jp_title', String(100), unique = False)
-    writer = Column('writer', String(45), unique = False)
-    createdUser = Column('created_user', Integer, unique = False)
-    createdAt = Column('created_at', DateTime(timezone=True), server_default=func.now(), unique = False)
-    modifiedUser = Column('modified_user', Integer, unique = False)
-    modifiedAt = Column('modified_at', DateTime(timezone=True), server_default=func.now(), unique = False)
-    korId = Column('kor_id', Integer, unique = False)
-    jpId = Column('jp_id', Integer, unique = False)
+    idSeq = db.Sequence('list_seq', metadata = db.Model.metadata)
+    listId = db.Column('list_id', db.Integer, idSeq, primary_key = True)
+    listCategoryId = db.Column('list_category_id', db.Integer, unique = False)
+    korTitle = db.Column('kor_title', db.String(100), unique = False)
+    jpTitle = db.Column('jp_title', db.String(100), unique = False)
+    korPreface = db.Column('kor_preface', db.String(100), unique = False)
+    jpPreface = db.Column('jp_preface', db.String(100), unique = False)
+    writer = db.Column('writer', db.String(45), unique = False)
+    korArticleId = db.Column('kor_article_id', db.Integer, unique = False)
+    jpArticleId = db.Column('jp_article_id', db.Integer, unique = False)
+    createdUser = db.Column('created_user', db.Integer, unique = False)
+    createdAt = db.Column('created_at', db.DateTime(timezone=True), server_default=func.now(), unique = False)
+    modifiedUser = db.Column('modified_user', db.Integer, unique = False)
+    modifiedAt = db.Column('modified_at', db.DateTime(timezone=True), server_default=func.now(), unique = False)
 
-    def __init__(self, listId, listCategoryId, korTitle, jpTitle, writer):
-        self.listId = listId
-        self.listCategoryId = listCategoryId
-        self.korTitle = korTitle
-        self.jpTitle = jpTitle
-        self.writer = writer
+    def select_all(self):
+        lists = List.query.order_by(desc(List.listId)).limit(5)
+        
+        return lists
+
+    def select_id(self, listId):
+        list = List.query.filter_by(listId = listId)
+
+        return list
+
+    def create(self, data):
+        newList = List(
+            listCategoryId = data['listCategoryId'],
+            korTitle = data['korTitle'],
+            jpTitle = data['jpTitle'],
+            writer = data['writer'],
+            korArticleId = data['korArticleId'],
+            jpArticleId = data['jpArticleId']
+        )
+        g.dao.add(newList)
+        g.dao.commit()
+
+        return newList
 
     def __repr__(self):
         return "<List %r %r %r %r %r %r %r %r %r %r %r %r>" % (self.listId, self.listCategoryId,
             self.korTitle, self.jpTitle, self.writer, self.createdUser, self.createdAt, self.modifiedUser, 
             self.modifiedAt, self.korId, self.jpId)
-
-# Create tables.
-Base.metadata.create_all(bind=engine)

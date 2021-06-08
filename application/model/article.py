@@ -3,17 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from sqlalchemy import desc
 
-from . import Base
 from .. import db
 
 
 class Article(db.Model):
     __tablename__ = 't_article'
 
-    idSeq = db.Sequence('article_seq', metadata = Base.metadata)
+    idSeq = db.Sequence('article_seq', metadata = db.Model.metadata)
     articleId = db.Column('article_id', db.Integer, idSeq, primary_key = True)
-    boardId = db.Column('board_id', db.Integer)
-    userId = db.Column('user_id', db.Integer)
     preface = db.Column('preface', db.String(50))
     title = db.Column('title', db.String(50))
     contents = db.Column('contents', db.String(50))

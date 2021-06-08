@@ -16,7 +16,7 @@ def read():
 @user.route('/create')
 def create():
     user_dict = {
-        'name' : 'NEWS'
+        'name' : '홍길동'
     }
     _user_service.createUser(user_dict)
     return redirect(url_for('user.read'))

@@ -45,6 +45,8 @@ board
     </div>
 </body> -->
 
+<!-- 
+category
 <body>
     <div>
         <ul>
@@ -61,4 +63,38 @@ board
             <input type="submit" value="등록">
         </form>
     </div>
-</body>
+</body> -->
+
+
+<!-- user    
+<body>
+    <div>
+        <ul>
+        {% for user in data %}
+        <li>User ID : {{ user.userId }} </li>
+        <li>Name : {{ user.name }} </li>
+        <br>
+        {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <form action="{{url_for('user.create')}}" method="post" id="actionForm">
+            <p>Name <input type="text" name="name"></p>
+            <input type="submit" value="등록">
+        </form>
+    </div>
+</body> -->
+
+<!-- <body>
+    <div>
+        <ul>
+        {% for list in data %}
+        <li>List ID : {{ list.listId }} </li>
+        <li>한국어 제목 : [{{list.korPreface}}] {{ list.korTitle }} </li>
+        <li>일본어 제목 : [{{list.jpPreface}}] {{ list.jpTitle }} </li>
+        <li>작성자 : {{ list.writer }} </li>
+        <br>
+        {% endfor %}
+        </ul>
+    </div>
+</body> -->

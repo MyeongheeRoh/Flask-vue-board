@@ -21,10 +21,17 @@ def create_app():
     from .controller.article import article
     from .controller.board import board
     from .controller.category import category
+    from .controller.user import user
+    from .controller.list import lst
+
+
     app.register_blueprint(board)
     app.register_blueprint(article)
     app.register_blueprint(category)
+    app.register_blueprint(user)
+    app.register_blueprint(lst)
 
+    #db init
     #db init
     with app.app_context():
         before_request()

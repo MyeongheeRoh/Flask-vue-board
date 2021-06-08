@@ -3,14 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from sqlalchemy import desc
 
-from . import Base
 from .. import db
 
 
 class Board(db.Model):
     __tablename__ = 't_board'
 
-    idSeq = db.Sequence('board_seq', metadata = Base.metadata)
+    idSeq = db.Sequence('board_seq', metadata = db.Model.metadata)
     boardId = db.Column('board_id', db.Integer, idSeq, primary_key = True)
     name = db.Column('nm', db.String(45), unique = False)
     categoryId = db.Column('category_id', db.Integer, idSeq, primary_key = True)

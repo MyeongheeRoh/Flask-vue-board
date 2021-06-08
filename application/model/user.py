@@ -1,28 +1,36 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Sequence, Boolean, DateTime
+from flask import g
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
+from sqlalchemy import desc
 
-engine = create_engine('postgresql://mae:mae1234@localhost:5432/test', echo=True)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
-Base = declarative_base()
-Base.query = db_session.query_property()
+from .. import db
 
-class User(Base):
+
+class User(db.Model):
     __tablename__ = 't_user'
 
-    idSeq = Sequence('user_seq', metadata = Base.metadata)
-    userId = Column('user_id', Integer, idSeq, primary_key = True)
-    name = Column('nm', String(45), unique = False)
+    idSeq = db.Sequence('user_seq', metadata = db.Model.metadata)
+    userId = db.Column('user_id', db.Integer, idSeq, primary_key = True)
+    name = db.Column('nm', db.String(45), unique = False)
 
-    def __init__(self, name):
-        self.name = name
+    def select_all(self):
+        users = User.query.order_by(desc(User.userId)).limit(5)
+        
+        return users
+
+    def select_id(self, userId):
+        user = User.query.filter_by(userId = userId)
+
+        return user
+
+    def create(self, data):
+        newUser = User(
+            name = data['name']
+        )
+        g.dao.add(newUser)
+        g.dao.commit()
+
+        return newUser
 
     def __repr__(self):
         return "<User %r %r>" % (self.userId, self.name)
-
-# Create tables.
-Base.metadata.create_all(bind=engine)
